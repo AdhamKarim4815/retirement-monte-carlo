@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Retirement Monte Carlo</title>
+<meta name="description" content="Seeded Monte Carlo simulator for savings and retirement plans. Runs entirely in your browser, works offline.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f5c5a'/%3E%3Cpath d='M4 23 L28 9 V23Z' fill='%235fd1b5' opacity='.45'/%3E%3Cpath d='M4 23 L28 16' stroke='%23fff' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+<a class="skip" href="#results">Skip to results</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="kicker">Open source &middot; runs in your browser &middot; no data leaves this page</p>
+    <h1>Retirement <em>Monte Carlo</em></h1>
+    <p class="lede">Thousands of possible market futures, one plan. See how often your savings last, when they tend to fail, and how much the order of returns matters.</p>
+  </div>
+</header>
+
+<div id="mini" class="mini" aria-hidden="true"></div>
+
+<main class="wrap">
+  <section class="personas-wrap" aria-labelledby="personas-h">
+    <h2 id="personas-h" class="eyebrow">Start from a fictional persona</h2>
+    <div id="personas" class="personas"></div>
+  </section>
+
+  <div class="layout">
+    <form id="controls" class="controls" aria-label="Plan inputs" autocomplete="off"></form>
+
+    <section id="results" class="results" aria-label="Simulation results" tabindex="-1">
+      <div class="runbar">
+        <div class="run-field">
+          <label for="sims">Simulations</label>
+          <select id="sims"><option value="2000">2,000</option><option value="5000">5,000</option><option value="10000">10,000</option></select>
+        </div>
+        <div class="run-field">
+          <label for="seed">Seed</label>
+          <input id="seed" type="number" min="0" max="4294967295" step="1" inputmode="numeric" aria-describedby="seed-help">
+        </div>
+        <button type="button" id="reseed" class="btn">New seed</button>
+        <button type="button" id="rerun" class="btn btn-primary">Run again</button>
+        <p id="status" class="status" role="status">Starting...</p>
+        <p id="seed-help" class="help">Same seed and inputs always give the same numbers.</p>
+      </div>
+      <div class="share">
+        <label for="share">Share this plan</label>
+        <input id="share" type="text" readonly>
+        <button type="button" id="copy" class="btn">Copy link</button>
+      </div>
+      <p id="notice" class="notice" role="status"></p>
+
+      <div id="hero" class="hero"></div>
+      <dl id="stats" class="stats"></dl>
+
+      <article class="card">
+        <h2>Portfolio by age</h2>
+        <p class="sub">Shaded bands show where 50% (dark) and 80% (light) of simulated paths fall. Hover, tap, or use the arrow keys to read a given age. All values are in today's dollars.</p>
+        <div id="readout" class="readout" aria-live="polite"></div>
+        <div id="fan" class="chart"></div>
+      </article>
+
+      <div class="two-up">
+        <article class="card">
+          <h2>Ending balances</h2>
+          <p class="sub">Share of simulations by balance at the plan end age.</p>
+          <div id="hist" class="chart"></div>
+          <p id="hist-note" class="note"></p>
+        </article>
+        <article class="card">
+          <h2>When plans fail</h2>
+          <p class="sub">Share of all simulations that run out of money at each age.</p>
+          <div id="fail" class="chart"></div>
+        </article>
+      </div>
+
+      <article id="seq-card" class="card">
+        <h2>Sequence-of-returns risk</h2>
+        <p id="seq-text" class="sub"></p>
+        <div id="seq" class="chart"></div>
+        <ul id="seq-legend" class="legend"></ul>
+      </article>
+
+      <details class="card how">
+        <summary>How the simulation works</summary>
+        <ul>
+          <li>Each year, stock and bond returns are drawn from correlated lognormal distributions (seeded mulberry32 plus Box-Muller), matched to your expected return and volatility, then blended by your stock share and rebalanced annually.</li>
+          <li>Everything is in real (today's) dollars. Nominal returns are converted with your inflation rate.</li>
+          <li>Before retirement, contributions are added at the end of each year and grow at the rate you set. In retirement, spending is taken at the start of each year.</li>
+          <li>A plan succeeds only if every year of spending is paid in full through the plan end age.</li>
+          <li>Guardrails hold spending steady, cut it by the adjustment size when the live withdrawal rate climbs above the band, and raise it when the rate falls below.</li>
+        </ul>
+        <p>Educational only. This is a simplified model, not financial advice. See the README for assumptions and limitations.</p>
+      </details>
+    </section>
+  </div>
+</main>
+
+<footer class="wrap foot">
+  <p>Built by Adham Karim &middot; MIT licensed &middot; <a href="https://github.com/adhamkarim4815/retirement-monte-carlo">Source on GitHub</a></p>
+  <p>For education only. Not financial advice. Real markets have fatter tails, changing correlations, taxes, and fees that this model leaves out.</p>
+</footer>
+
+<noscript><p class="wrap">This page needs JavaScript to run the simulation. Nothing is sent anywhere.</p></noscript>
+<script src="dist/rmc.bundle.js" defer></script>
+</body>
+</html>

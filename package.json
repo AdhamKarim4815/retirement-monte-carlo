@@ -1,0 +1,20 @@
+{
+  "name": "retirement-monte-carlo",
+  "version": "1.0.0",
+  "description": "Seeded Monte Carlo simulator for savings and retirement plans. Static, offline, no dependencies.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "author": "Adham Karim",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adhamkarim4815/retirement-monte-carlo.git"
+  },
+  "scripts": {
+    "test": "node --test",
+    "bundle": "node scripts/bundle.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
