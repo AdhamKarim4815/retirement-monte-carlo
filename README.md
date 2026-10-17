@@ -4,6 +4,8 @@ Seeded Monte Carlo simulator for savings and retirement plans: a static page wit
 
 ![Screenshot of the simulator showing a success probability, percentile fan chart and ending balance histogram](docs/screenshot.png)
 
+**[Live demo](https://adhamkarim4815.github.io/retirement-monte-carlo/)**
+
 ## Live demo
 
 Enable GitHub Pages for your copy of the repo (Settings, Pages, deploy from branch `main`, root folder). The app is then served at:
